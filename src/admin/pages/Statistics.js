@@ -11,8 +11,7 @@ import {
     Line,
     PieChart,
     Pie,
-    Cell,
-    Legend
+    Cell
 } from "recharts";
 import "../../assets/scss/admin.scss";
 import apiService from "../../api/apiService";

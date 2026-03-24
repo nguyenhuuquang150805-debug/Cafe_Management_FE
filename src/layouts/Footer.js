@@ -134,8 +134,7 @@ const Footer = () => {
                             </h2>
                             {blogPosts.map((post) => (
                                 <div key={post.id} className="mb-4 d-flex">
-                                    <a
-                                        href="#"
+                                    <button
                                         className="blog-img"
                                         style={{
                                             width: '80px',
@@ -146,15 +145,20 @@ const Footer = () => {
                                             backgroundPosition: 'center',
                                             borderRadius: '8px',
                                             marginRight: '15px',
-                                            transition: 'transform 0.3s ease'
+                                            transition: 'transform 0.3s ease',
+                                            border: 'none',
+                                            cursor: 'pointer',
+                                            padding: 0
                                         }}
+                                        onClick={() => window.location.href = '#'}
+                                        aria-label="View blog post image"
                                         onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
                                         onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                                    ></a>
+                                    ></button>
                                     <div className="text">
                                         <h3 className="heading mb-2">
                                             <a
-                                                href="#"
+                                                href="/blog"
                                                 style={{
                                                     color: '#fff',
                                                     fontSize: '14px',
@@ -189,6 +193,7 @@ const Footer = () => {
                         </div>
                     </div>
 
+
                     {/* Services Section */}
                     <div className="col-lg-2 col-md-6 mb-4 mb-md-0">
                         <div className="ftco-footer-widget">
@@ -210,7 +215,7 @@ const Footer = () => {
                                 {services.map((service, index) => (
                                     <li key={index} className="mb-2">
                                         <a
-                                            href="#"
+                                            href="/services"
                                             style={{
                                                 color: 'rgba(255,255,255,0.6)',
                                                 textDecoration: 'none',

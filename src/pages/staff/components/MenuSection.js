@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getImageUrl } from '../utils/orderUtils';
+import apiService from '../../../api/apiService';
 
 const MenuSection = ({
     currentUser,
@@ -22,7 +23,7 @@ const MenuSection = ({
     useEffect(() => {
         if (currentUser) {
             if (currentUser.imageUrl) {
-                setAvatarSrc(`http://localhost:8080/uploads/${currentUser.imageUrl}`);
+                setAvatarSrc(apiService.GET_IMG(currentUser.imageUrl));
             } else {
                 setAvatarSrc(generateAvatarImage(currentUser.fullName));
             }
@@ -185,9 +186,12 @@ const MenuSection = ({
                             onClick={() => onAddToCart(item)}
                         >
                             <img
-                                src={getImageUrl(item.imageUrl)}
+                                src={item.imageUrl ? apiService.GET_IMG(item.imageUrl) : '/fallback.jpg'}
                                 alt={item.name}
-                                onError={(e) => (e.target.src = '/fallback.jpg')}
+                                onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = '/fallback.jpg';
+                                }}
                             />
                             <div className="card-body">
                                 <h5>{item.name}</h5>

@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 import "../assets/scss/menu.scss";
 import apiService from "../api/apiService";
 
-const socket = io("http://localhost:3001");
+const socket = io("https://cafe-management-be-5flk.onrender.com");
 
 const Menu = () => {
     const [categories, setCategories] = useState([]);
@@ -183,9 +183,8 @@ const Menu = () => {
 
     const getImageUrl = (imageName) => {
         if (!imageName) return "/fallback.jpg";
-        return `http://localhost:8080/uploads/${imageName}`;
+        return apiService.GET_IMG(imageName);
     };
-
     const renderCategory = (category) => {
         const items = products.filter((p) => p.category?.id === category.id);
         if (items.length === 0) return null;

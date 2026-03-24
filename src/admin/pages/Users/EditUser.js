@@ -14,7 +14,7 @@ const EditUser = () => {
         role: "",
         isActive: true,
     });
-    const [roles, setRoles] = useState(["ADMIN", "EMPLOYEE", "STAFF"]);
+    const [roles] = useState(["ADMIN", "EMPLOYEE", "STAFF"]);
     const [imageFile, setImageFile] = useState(null);
     const [preview, setPreview] = useState("");
     const token = localStorage.getItem("token");

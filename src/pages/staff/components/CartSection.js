@@ -1,5 +1,6 @@
 import React from 'react';
-import { getImageUrl, calculateCartTotal, calculateDiscount } from '../utils/orderUtils';
+import { calculateCartTotal, calculateDiscount } from '../utils/orderUtils';
+import apiService from '../../../api/apiService';
 
 const CartSection = ({
     cart,
@@ -63,9 +64,12 @@ const CartSection = ({
                             <div key={item.id} className="cart-item">
                                 <div className="item-image">
                                     <img
-                                        src={getImageUrl(item.imageUrl)}
+                                        src={item.imageUrl ? apiService.GET_IMG(item.imageUrl) : '/fallback.jpg'}
                                         alt={item.name}
-                                        onError={(e) => (e.target.src = '/fallback.jpg')}
+                                        onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src = '/fallback.jpg';
+                                        }}
                                     />
                                 </div>
                                 <div className="item-info">
