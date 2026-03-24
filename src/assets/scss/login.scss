@@ -1,0 +1,385 @@
+// ===== Variables =====
+$bg-primary: #1a1a1a;
+$bg-secondary: #2a2a2a;
+$accent-gold: #c49b63;
+$accent-gradient: linear-gradient(135deg, #c49b63 0%, #d4a574 100%);
+$text-primary: #ffffff;
+$text-secondary: rgba(255, 255, 255, 0.7);
+$error-color: #ff4757;
+$border-color: rgba(196, 155, 99, 0.2);
+$transition: all 0.3s ease;
+
+// ===== Login Page =====
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $bg-primary;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+            radial-gradient(circle at 20% 30%, rgba(196, 155, 99, 0.08) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(196, 155, 99, 0.08) 0%, transparent 50%);
+        animation: backgroundPulse 10s ease-in-out infinite;
+    }
+}
+
+// ===== Login Container =====
+.login-container {
+    background: $bg-secondary;
+    border-radius: 24px;
+    padding: 50px 40px;
+    width: 100%;
+    height: 100%;
+    min-height: 600px;
+    max-width: 440px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    border: 1px solid $border-color;
+    position: relative;
+    z-index: 1;
+    animation: fadeInUp 0.6s ease-out;
+
+    @media (max-width: 480px) {
+        padding: 40px 30px;
+        max-width: 100%;
+    }
+}
+
+// ===== Header Section =====
+.login-header {
+    position: relative;
+    text-align: center;
+    margin-bottom: 40px;
+    margin-top: 120px;
+    z-index: 0;
+
+    .cafe-header__brand {
+        position: absolute;
+        bottom: -40px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 300px;
+        z-index: 0;
+
+        .cafe-logo {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            opacity: 0.9;
+            filter: drop-shadow(0 0 10px rgba(196, 155, 99, 0.4));
+        }
+    }
+
+    .login-subtitle {
+        color: $text-secondary;
+        font-size: 0.95rem;
+    }
+
+    .login-footer {
+        position: relative;
+        z-index: 1; // 🔥 đè lên logo
+    }
+}
+
+
+// ===== Form =====
+.login-form {
+    .form-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: $text-primary;
+        text-align: center;
+        margin-bottom: 30px;
+        position: relative;
+        padding-bottom: 15px;
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: $accent-gradient;
+            border-radius: 2px;
+        }
+    }
+}
+
+// ===== Error Message =====
+.login-error {
+    background: rgba(255, 71, 87, 0.1);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: shakeError 0.4s ease-in-out;
+
+    span {
+        font-size: 1.2rem;
+    }
+
+    p {
+        color: #ff6b7a;
+        font-size: 0.9rem;
+        margin: 0;
+        font-weight: 500;
+    }
+}
+
+// ===== Input Group =====
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+
+    .input-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: $accent-gold;
+        font-size: 1.3rem;
+    }
+
+    input {
+        width: 100%;
+        padding: 14px 50px;
+        background: $bg-primary;
+        border: 2px solid $border-color;
+        border-radius: 12px;
+        color: $text-primary;
+        font-size: 1rem;
+        transition: $transition;
+
+        &::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        &:focus {
+            border-color: $accent-gold;
+            background: lighten($bg-primary, 2%);
+            box-shadow: 0 0 0 4px rgba(196, 155, 99, 0.1);
+        }
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: $text-secondary;
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: $transition;
+
+        &:hover {
+            color: $accent-gold;
+        }
+    }
+}
+
+// ===== Button =====
+.login-btn {
+    width: 100%;
+    padding: 14px 30px;
+    background: $accent-gradient;
+    color: $bg-primary;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: $transition;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(196, 155, 99, 0.3);
+
+    &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(196, 155, 99, 0.4);
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    .spinner {
+        width: 18px;
+        height: 18px;
+        border: 3px solid rgba(0, 0, 0, 0.2);
+        border-top-color: $bg-primary;
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+    }
+}
+
+// ===== Footer =====
+.login-footer {
+    margin-top: 30px;
+    text-align: center;
+
+    p {
+        color: $text-secondary;
+        font-size: 0.85rem;
+    }
+}
+
+// ===== Animations =====
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes backgroundPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes shakeError {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-10px);
+    }
+
+    75% {
+        transform: translateX(10px);
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+// ===== Responsive =====
+@media (max-width: 480px) {
+    .cafe-header__brand .cafe-logo {
+        height: 80px;
+    }
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+
+    p {
+        color: #4a5568;
+        font-size: 0.9rem;
+        margin: 0;
+
+        .register-link {
+            color: #667eea;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+
+            &:hover {
+                color: #764ba2;
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+// Footer
+.login-footer {
+    text-align: center;
+    margin-top: 2rem;
+
+    p {
+        color: #718096;
+        font-size: 0.85rem;
+        margin: 0;
+    }
+}
+
+// Responsive Design
+@media (max-width: 576px) {
+    .login-page {
+        padding: 1rem;
+    }
+
+    .login-container {
+        padding: 2rem 1.5rem;
+    }
+
+    .login-form {
+        .form-title {
+            font-size: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+
+            input {
+                font-size: 0.9rem;
+            }
+        }
+    }
+
+    .login-header {
+        .cafe-header__brand {
+            .cafe-logo {
+                width: 80px;
+                height: 80px;
+            }
+        }
+
+        .login-subtitle {
+            font-size: 0.9rem;
+        }
+    }
+}
+
+@media (max-width: 380px) {
+    .login-container {
+        padding: 1.5rem 1rem;
+    }
+
+    .login-form {
+        .form-title {
+            font-size: 1.35rem;
+        }
+    }
+}

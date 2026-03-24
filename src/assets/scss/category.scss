@@ -1,0 +1,315 @@
+$bg-dark: #1a1a1a;
+$bg-light: #f9fafc;
+$card-bg: #ffffff;
+$accent-gold: #0e0d0d;
+$bg-blue: #0660f3;
+$text-dark: #2c2c2c;
+$text-muted: #6c757d;
+$border-color: #e0e0e0;
+$success-green: #28a745;
+$error-red: #dc3545;
+
+// 🌟 Giao diện chính
+.admin-categories {
+    background-color: $bg-light;
+    color: $text-dark;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    animation: fadeIn 0.3s ease;
+    overflow-x: auto;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    // 🔹 Header danh mục
+    .categories-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid rgba($accent-gold, 0.6);
+        padding-bottom: 12px;
+        gap: 10px;
+
+        h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            background: linear-gradient(90deg, #0e0b06, #0b0b09);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        // 🔸 Nút thêm
+        .btn.btn-success {
+            border: none !important;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+
+            &:hover {
+                background-color: darken($success-green, 10%) !important;
+                transform: translateY(-2px);
+            }
+        }
+    }
+
+    // 🔷 Bảng danh mục
+    table {
+        width: 100%;
+        min-width: 650px;
+        border-radius: 10px;
+        margin-top: 25px;
+        background-color: $card-bg;
+        border-collapse: separate;
+        border-spacing: 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+        thead {
+            background: linear-gradient(180deg, #111 0%, #1a1a1a 100%);
+            color: #f5f5f5;
+            text-transform: uppercase;
+            border-bottom: 2px solid $accent-gold;
+
+            th {
+                padding: 12px;
+                font-size: 0.9rem;
+                text-align: center;
+                letter-spacing: 0.5px;
+                font-weight: 600;
+            }
+        }
+
+        td {
+            text-align: center;
+            padding: 12px;
+            border-bottom: 1px solid $border-color;
+            color: $text-dark;
+            vertical-align: middle;
+
+            &:nth-child(3) {
+                font-weight: 600;
+                color: $accent-gold;
+            }
+
+            &:last-child {
+                button {
+                    margin: 0 3px;
+                    border-radius: 6px;
+                    padding: 6px 10px;
+                    transition: 0.2s;
+
+                    &.btn-outline-primary {
+                        color: $bg-blue;
+                        background: transparent;
+
+                        &:hover {
+                            background-color: $bg-blue;
+                            color: white;
+                        }
+                    }
+
+                    &.btn-outline-danger {
+                        border-color: $error-red;
+                        color: $error-red;
+
+                        &:hover {
+                            background-color: $error-red;
+                            color: white;
+                        }
+                    }
+                }
+            }
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover td {
+            background-color: rgba(196, 155, 99, 0.08);
+            transition: 0.2s ease-in;
+        }
+
+        .category-thumb {
+            width: 55px;
+            height: 55px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid $accent-gold;
+            box-shadow: 0 0 8px rgba(196, 155, 99, 0.3);
+        }
+    }
+
+    .loading {
+        text-align: center;
+        font-size: 1.2rem;
+        color: $accent-gold;
+        margin-top: 50px;
+    }
+}
+
+// 🌙 Popup form (giữ nguyên đẹp)
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background: $card-bg;
+    border-radius: 12px;
+    padding: 25px;
+    width: 420px;
+    max-width: 90%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    animation: slideUp 0.3s ease;
+
+    h4 {
+        color: $accent-gold;
+        text-align: center;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+
+    label {
+        display: block;
+        color: $text-muted;
+        margin-bottom: 5px;
+        margin-top: 12px;
+        font-weight: 500;
+    }
+
+    input[type="text"],
+    textarea,
+    input[type="file"] {
+        width: 100%;
+        background: #f8f9fa;
+        border: 1px solid $border-color;
+        border-radius: 6px;
+        padding: 8px 10px;
+        color: $text-dark;
+        font-size: 0.95rem;
+        transition: 0.2s;
+
+        &:focus {
+            outline: none;
+            border-color: $accent-gold;
+            box-shadow: 0 0 6px rgba(196, 155, 99, 0.4);
+        }
+    }
+
+    textarea {
+        resize: none;
+        height: 80px;
+    }
+
+    .form-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+
+        .btn {
+            padding: 8px 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #c49b63, #b3874f);
+            color: white;
+            border: none;
+
+            &:hover {
+                background: linear-gradient(135deg, #b3874f, #a3773d);
+            }
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            color: white;
+
+            &:hover {
+                background-color: darken(#6c757d, 8%);
+            }
+        }
+    }
+}
+
+// 💫 Hiệu ứng
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+// 📱 Responsive
+@media (max-width: 992px) {
+    .admin-categories {
+        padding: 15px;
+
+        table {
+            font-size: 0.9rem;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+        }
+
+        .category-thumb {
+            width: 45px;
+            height: 45px;
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    .admin-categories {
+        padding: 10px;
+
+        .categories-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        table {
+            font-size: 0.8rem;
+            min-width: 500px;
+        }
+
+        .btn-success {
+            width: 100%;
+            text-align: center;
+        }
+    }
+}
