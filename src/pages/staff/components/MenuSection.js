@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { getImageUrl } from '../utils/orderUtils';
+import React, { useState, useEffect, useCallback } from 'react';
 import apiService from '../../../api/apiService';
 
 const MenuSection = ({
@@ -20,27 +19,17 @@ const MenuSection = ({
     const [showUserMenu, setShowUserMenu] = useState(false);
     const [avatarSrc, setAvatarSrc] = useState("");
 
-    useEffect(() => {
-        if (currentUser) {
-            if (currentUser.imageUrl) {
-                setAvatarSrc(apiService.GET_IMG(currentUser.imageUrl));
-            } else {
-                setAvatarSrc(generateAvatarImage(currentUser.fullName));
-            }
-        }
-    }, [currentUser]);
-
     // Hàm tạo avatar từ chữ cái
-    const getInitials = (name) => {
+    const getInitials = useCallback((name) => {
         if (!name) return "?";
         const words = name.trim().split(" ");
         if (words.length >= 2) {
             return (words[0][0] + words[words.length - 1][0]).toUpperCase();
         }
         return name.substring(0, 2).toUpperCase();
-    };
+    }, []);
 
-    const getAvatarColor = (name) => {
+    const getAvatarColor = useCallback((name) => {
         const colors = [
             "#FF6B6B", "#4ECDC4", "#45B7D1", "#FFA07A",
             "#98D8C8", "#6C5CE7", "#A29BFE", "#FD79A8",
@@ -48,9 +37,9 @@ const MenuSection = ({
         ];
         const index = name ? name.charCodeAt(0) % colors.length : 0;
         return colors[index];
-    };
+    }, []);
 
-    const generateAvatarImage = (name) => {
+    const generateAvatarImage = useCallback((name) => {
         const initials = getInitials(name);
         const bgColor = getAvatarColor(name);
 
@@ -66,14 +55,24 @@ const MenuSection = ({
         `;
 
         return `data:image/svg+xml;base64,${btoa(svg)}`;
-    };
+    }, [getInitials, getAvatarColor]);
 
-    const handleImageError = () => {
+    useEffect(() => {
+        if (currentUser) {
+            if (currentUser.imageUrl) {
+                setAvatarSrc(apiService.GET_IMG(currentUser.imageUrl));
+            } else {
+                setAvatarSrc(generateAvatarImage(currentUser.fullName));
+            }
+        }
+    }, [currentUser, generateAvatarImage]);
+
+    const handleImageError = useCallback(() => {
         console.log("❌ Lỗi load ảnh, chuyển sang avatar chữ cái");
         if (currentUser) {
             setAvatarSrc(generateAvatarImage(currentUser.fullName));
         }
-    };
+    }, [currentUser, generateAvatarImage]);
 
     return (
         <div className="menu-section">

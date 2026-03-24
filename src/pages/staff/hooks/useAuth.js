@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import apiService from '../../../api/apiService';
 
 export const useAuth = () => {
@@ -6,11 +6,17 @@ export const useAuth = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        checkLoginStatus();
+    const handleLogout = useCallback(() => {
+        if (window.confirm('Bạn có chắc muốn đăng xuất?')) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            setCurrentUser(null);
+            setIsLoggedIn(false);
+            window.location.href = '/login';
+        }
     }, []);
 
-    const checkLoginStatus = async () => {
+    const checkLoginStatus = useCallback(async () => {
         const token = localStorage.getItem('token');
         if (!token) {
             setIsLoading(false);
@@ -69,17 +75,11 @@ export const useAuth = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [handleLogout]);
 
-    const handleLogout = () => {
-        if (window.confirm('Bạn có chắc muốn đăng xuất?')) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('username');
-            setCurrentUser(null);
-            setIsLoggedIn(false);
-            window.location.href = '/login';
-        }
-    };
+    useEffect(() => {
+        checkLoginStatus();
+    }, [checkLoginStatus]);
 
     return {
         currentUser,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
     BarChart,
     Bar,
@@ -33,34 +33,7 @@ function Statistics() {
 
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
-    useEffect(() => {
-        fetchAllData();
-    }, []);
-
-    const fetchAllData = async () => {
-        try {
-            setLoading(true);
-
-            // Gọi API song song
-            const [billsRes, ordersRes, orderItemsRes] = await Promise.all([
-                apiService.GET_ALL("bills"),
-                apiService.GET_ALL("orders"),
-                apiService.GET_ALL("order-items")
-            ]);
-
-            const bills = billsRes.data || [];
-            const orders = ordersRes.data || [];
-            const orderItems = orderItemsRes.data || [];
-
-            calculateStatistics(bills, orders, orderItems);
-        } catch (err) {
-            console.error("❌ Lỗi tải dữ liệu thống kê:", err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const calculateStatistics = (bills, orders, orderItems) => {
+    const calculateStatistics = useCallback((bills, orders, orderItems) => {
         // === 1. Tổng quan ===
         const totalRevenue = bills.reduce((sum, bill) =>
             sum + (parseFloat(bill.totalAmount) || 0), 0
@@ -142,7 +115,34 @@ function Statistics() {
         setRevenueData(sortedRevenue);
         setPaymentMethodData(paymentData);
         setOrderStatusData(statusData);
-    };
+    }, []);
+
+    const fetchAllData = useCallback(async () => {
+        try {
+            setLoading(true);
+
+            // Gọi API song song
+            const [billsRes, ordersRes, orderItemsRes] = await Promise.all([
+                apiService.GET_ALL("bills"),
+                apiService.GET_ALL("orders"),
+                apiService.GET_ALL("order-items")
+            ]);
+
+            const bills = billsRes.data || [];
+            const orders = ordersRes.data || [];
+            const orderItems = orderItemsRes.data || [];
+
+            calculateStatistics(bills, orders, orderItems);
+        } catch (err) {
+            console.error("❌ Lỗi tải dữ liệu thống kê:", err);
+        } finally {
+            setLoading(false);
+        }
+    }, [calculateStatistics]);
+
+    useEffect(() => {
+        fetchAllData();
+    }, [fetchAllData]);
 
     if (loading) {
         return (

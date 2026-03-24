@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import apiService from '../../../api/apiService';
 import {
     generateInvoiceContent,
@@ -19,6 +19,25 @@ const BillsHistoryModal = ({ onClose, currentUser }) => {
 
     const printRef = useRef();
 
+    const filterBills = useCallback(() => {
+        let filtered = [...bills];
+
+        if (filter !== 'ALL') {
+            filtered = filtered.filter(b => b.paymentStatus === filter);
+        }
+
+        if (searchTerm.trim()) {
+            const search = searchTerm.toLowerCase();
+            filtered = filtered.filter(b =>
+                b.id.toString().includes(search) ||
+                b.orderId.toString().includes(search) ||
+                b.order?.table?.number?.toString().includes(search)
+            );
+        }
+
+        setFilteredBills(filtered);
+    }, [bills, filter, searchTerm]);
+
     const handlePrint = useReactToPrint({
         content: () => printRef.current,
         documentTitle: `Bill_${printBillData?.billId || 'invoice'}`,
@@ -28,23 +47,7 @@ const BillsHistoryModal = ({ onClose, currentUser }) => {
         }
     });
 
-    useEffect(() => {
-        fetchBills();
-    }, []);
-
-    useEffect(() => {
-        if (printBillData) {
-            setTimeout(() => {
-                handlePrint();
-            }, 100);
-        }
-    }, [printBillData]);
-
-    useEffect(() => {
-        filterBills();
-    }, [bills, filter, searchTerm]);
-
-    const fetchBills = async () => {
+    const fetchBills = useCallback(async () => {
         setLoading(true);
         try {
             const response = await apiService.GET_ALL('bills');
@@ -76,26 +79,23 @@ const BillsHistoryModal = ({ onClose, currentUser }) => {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
-    const filterBills = () => {
-        let filtered = [...bills];
+    useEffect(() => {
+        fetchBills();
+    }, [fetchBills]);
 
-        if (filter !== 'ALL') {
-            filtered = filtered.filter(b => b.paymentStatus === filter);
+    useEffect(() => {
+        if (printBillData) {
+            setTimeout(() => {
+                handlePrint();
+            }, 100);
         }
+    }, [printBillData, handlePrint]);
 
-        if (searchTerm.trim()) {
-            const search = searchTerm.toLowerCase();
-            filtered = filtered.filter(b =>
-                b.id.toString().includes(search) ||
-                b.orderId.toString().includes(search) ||
-                b.order?.table?.number?.toString().includes(search)
-            );
-        }
-
-        setFilteredBills(filtered);
-    };
+    useEffect(() => {
+        filterBills();
+    }, [filterBills]);
 
     const handlePrintBill = async (bill) => {
         try {

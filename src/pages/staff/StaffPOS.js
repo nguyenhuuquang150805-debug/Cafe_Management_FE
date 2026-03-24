@@ -98,7 +98,6 @@ const StaffPOS = () => {
         }
     }, [location.search]);
 
-    // WebSocket
     useEffect(() => {
         socket.on('new-item-for-staff', (itemData) => {
             console.log('📦 Nhận món mới từ khách:', itemData);
@@ -130,7 +129,7 @@ const StaffPOS = () => {
         });
 
         return () => socket.off('new-item-for-staff');
-    }, [soundEnabled]);
+    }, [soundEnabled, setIsTakeaway, setSelectedTable]);
 
     useEffect(() => {
         const checkPaymentCompletion = () => {
