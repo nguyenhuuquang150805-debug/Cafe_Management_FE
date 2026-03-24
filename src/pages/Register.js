@@ -103,8 +103,7 @@ function Register() {
                 email: formData.email,
                 password: formData.password,
                 fullName: formData.fullName,
-                phone: formData.phone,
-                role: "ADMIN"
+                phone: formData.phone
             };
 
             const response = await apiService.POST_ADD("auth/register", registerData);
