@@ -7,7 +7,6 @@ import Menu from "./Menu";
 const Header = () => {
     useEffect(() => {
         const checkLogin = () => {
-            // Nếu bạn cần làm gì đó khi có sự kiện storage, thêm vào đây
             console.log("Storage changed");
         };
         window.addEventListener("storage", checkLogin);

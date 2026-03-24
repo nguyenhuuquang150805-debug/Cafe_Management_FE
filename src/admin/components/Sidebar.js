@@ -1,8 +1,9 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
     const location = useLocation();
+    const navigate = useNavigate();
 
     const menuItems = [
         { path: "/admin", label: "📊 Thống kê" },
@@ -13,6 +14,10 @@ const Sidebar = () => {
         { path: "/admin/orders", label: "🧾 Đơn hàng" },
         { path: "/admin/users", label: "👥 Nhân viên" },
     ];
+
+    const handleNavigateToStaff = () => {
+        navigate("/staff/pos");
+    };
 
     return (
         <div className="sidebar">
@@ -35,6 +40,43 @@ const Sidebar = () => {
                     </li>
                 ))}
             </ul>
+
+            {/* Nút chuyển hướng về trang staff */}
+            <div className="sidebar-footer">
+                <button
+                    className="staff-nav-btn"
+                    onClick={handleNavigateToStaff}
+                    style={{
+                        width: '100%',
+                        padding: '12px',
+                        backgroundColor: '#c49b63',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '8px',
+                        transition: 'all 0.3s ease',
+                        marginTop: '20px'
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = '#d4a574';
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = '#c49b63';
+                        e.currentTarget.style.transform = 'translateY(0)';
+                    }}
+                >
+                    <span>👨‍🍳</span>
+                    Chuyển sang trang Staff
+                    <span>→</span>
+                </button>
+            </div>
         </div>
     );
 };

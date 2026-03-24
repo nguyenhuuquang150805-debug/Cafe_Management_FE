@@ -15,6 +15,7 @@ import "../assets/scss/register.scss";
 
 function Register() {
     const [formData, setFormData] = useState({
+        username: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -34,58 +35,56 @@ function Register() {
             ...prev,
             [name]: value
         }));
-        setError(""); // Clear error when user types
+        setError("");
     };
 
     const validateForm = () => {
-        // Check empty fields
-        if (!formData.email.trim()) {
-            setError("Vui lòng nhập email!");
+        if (!formData.username.trim()) {
+            setError("Vui lòng nhập tên đăng nhập!");
             return false;
         }
-        if (!formData.password.trim()) {
-            setError("Vui lòng nhập mật khẩu!");
-            return false;
-        }
-        if (!formData.confirmPassword.trim()) {
-            setError("Vui lòng xác nhận mật khẩu!");
+        if (formData.username.length < 4) {
+            setError("Tên đăng nhập phải có ít nhất 4 ký tự!");
             return false;
         }
         if (!formData.fullName.trim()) {
             setError("Vui lòng nhập họ và tên!");
             return false;
         }
-        if (!formData.phone.trim()) {
-            setError("Vui lòng nhập số điện thoại!");
+        if (!formData.email.trim()) {
+            setError("Vui lòng nhập email!");
             return false;
         }
-
-        // Validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(formData.email)) {
             setError("Email không hợp lệ!");
             return false;
         }
-
-        // Validate password length
-        if (formData.password.length < 6) {
-            setError("Mật khẩu phải có ít nhất 6 ký tự!");
+        if (!formData.phone.trim()) {
+            setError("Vui lòng nhập số điện thoại!");
             return false;
         }
-
-        // Validate password match
-        if (formData.password !== formData.confirmPassword) {
-            setError("Mật khẩu xác nhận không khớp!");
-            return false;
-        }
-
-        // Validate phone format (Vietnamese phone number)
         const phoneRegex = /^(0|\+84)[0-9]{9}$/;
         if (!phoneRegex.test(formData.phone)) {
             setError("Số điện thoại không hợp lệ!");
             return false;
         }
-
+        if (!formData.password.trim()) {
+            setError("Vui lòng nhập mật khẩu!");
+            return false;
+        }
+        if (formData.password.length < 6) {
+            setError("Mật khẩu phải có ít nhất 6 ký tự!");
+            return false;
+        }
+        if (!formData.confirmPassword.trim()) {
+            setError("Vui lòng xác nhận mật khẩu!");
+            return false;
+        }
+        if (formData.password !== formData.confirmPassword) {
+            setError("Mật khẩu xác nhận không khớp!");
+            return false;
+        }
         return true;
     };
 
@@ -94,14 +93,13 @@ function Register() {
         setError("");
         setSuccess("");
 
-        if (!validateForm()) {
-            return;
-        }
+        if (!validateForm()) return;
 
         setIsLoading(true);
 
         try {
             const registerData = {
+                username: formData.username,
                 email: formData.email,
                 password: formData.password,
                 fullName: formData.fullName,
@@ -109,13 +107,12 @@ function Register() {
             };
 
             const response = await apiService.POST_ADD("auth/register", registerData);
-
             console.log("✅ Đăng ký thành công:", response.data);
 
             setSuccess("Đăng ký thành công! Đang chuyển đến trang đăng nhập...");
 
-            // Reset form
             setFormData({
+                username: "",
                 email: "",
                 password: "",
                 confirmPassword: "",
@@ -123,7 +120,6 @@ function Register() {
                 phone: ""
             });
 
-            // Redirect to login after 2 seconds
             setTimeout(() => {
                 navigate("/login");
             }, 2000);
@@ -132,7 +128,7 @@ function Register() {
             console.error("❌ Đăng ký thất bại:", err);
 
             if (err.response?.status === 409) {
-                setError("Email đã được sử dụng!");
+                setError("Tên đăng nhập hoặc email đã được sử dụng!");
             } else if (err.response?.data?.error) {
                 setError(err.response.data.error);
             } else {
@@ -181,6 +177,23 @@ function Register() {
                             <p>{success}</p>
                         </div>
                     )}
+
+                    {/* Username Input */}
+                    <div className="input-group">
+                        <div className="input-icon">
+                            <IonIcon icon={personOutline} />
+                        </div>
+                        <input
+                            id="username"
+                            name="username"
+                            data-testid="register-username"
+                            type="text"
+                            placeholder="Tên đăng nhập"
+                            value={formData.username}
+                            onChange={handleInputChange}
+                            disabled={isLoading}
+                        />
+                    </div>
 
                     {/* Full Name Input */}
                     <div className="input-group">

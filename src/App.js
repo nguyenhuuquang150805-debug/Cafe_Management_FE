@@ -22,7 +22,7 @@ function PrivateRoute({ children }) {
   try {
     const payload = JSON.parse(atob(token.split(".")[1]));
     if (payload.role !== "ADMIN") {
-      return <Navigate to="/" />;
+      return <Navigate to="/login" />;
     }
   } catch (error) {
     localStorage.removeItem("token");
@@ -35,8 +35,13 @@ function PrivateRoute({ children }) {
 function App() {
   return (
     <Routes>
+      <Route path="/" element={<Navigate to="/login" replace />} />
+
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+
       <Route
-        path="/*"
+        path="/home/*"
         element={
           <>
             <Header />
@@ -48,10 +53,6 @@ function App() {
 
       <Route path="/menu" element={<Menu />} />
 
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-
-
       <Route
         path="/admin/*"
         element={
@@ -60,8 +61,11 @@ function App() {
           </PrivateRoute>
         }
       />
+
       <Route path="/staff" element={<StaffPOS />} />
       <Route path="/staff/payos-return" element={<PayOSReturn />} />
+
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 }
