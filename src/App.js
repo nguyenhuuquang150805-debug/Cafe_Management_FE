@@ -35,10 +35,17 @@ function PrivateRoute({ children }) {
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/login" replace />} />
-
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      {/* Trang chủ mở được không cần đăng nhập */}
+      <Route
+        path="/"
+        element={
+          <>
+            <Header />
+            <Main />
+            <Footer />
+          </>
+        }
+      />
 
       <Route
         path="/home/*"
@@ -52,6 +59,8 @@ function App() {
       />
 
       <Route path="/menu" element={<Menu />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
       <Route
         path="/admin/*"
@@ -65,7 +74,8 @@ function App() {
       <Route path="/staff" element={<StaffPOS />} />
       <Route path="/staff/payos-return" element={<PayOSReturn />} />
 
-      <Route path="*" element={<Navigate to="/login" replace />} />
+      {/* Fallback về trang chủ */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

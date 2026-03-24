@@ -146,3 +146,185 @@ $transition-smooth: all 0.3s ease;
     background: none; // đảm bảo không có nền
     mix-blend-mode: lighten; // giúp nền đen hòa vào nền tối nếu còn sót
 }
+
+// ===== Variables =====
+$bg-primary: #1a1a1a;
+$bg-secondary: #2a2a2a;
+$accent-gold: #c49b63;
+$text-primary: #ffffff;
+$text-secondary: rgba(255, 255, 255, 0.8);
+$transition-smooth: all 0.3s ease;
+
+// ===== Simple Cafe Header =====
+.cafe-header {
+    background: $bg-primary;
+    border-bottom: 2px solid rgba(196, 155, 99, 0.2);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    &__container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 30px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+
+        @media (max-width: 768px) {
+            padding: 0 20px;
+            height: 60px;
+        }
+    }
+
+    // Logo/Brand
+    &__brand {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: $accent-gold;
+        font-weight: bold;
+        font-size: 1.4rem;
+        gap: 10px;
+        white-space: nowrap;
+        transition: $transition-smooth;
+
+        &:hover {
+            color: lighten($accent-gold, 10%);
+        }
+
+        @media (max-width: 768px) {
+            font-size: 1.1rem;
+        }
+    }
+
+    // Title
+    &__title {
+        flex: 1;
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: $text-primary;
+        margin: 0;
+        letter-spacing: 0.5px;
+
+        @media (max-width: 768px) {
+            font-size: 1rem;
+        }
+
+        @media (max-width: 480px) {
+            display: none;
+        }
+    }
+
+    // Auth Section
+    &__auth {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    // User group (dashboard + logout)
+    &__user {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    // Buttons chung
+    &__btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 18px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: $transition-smooth;
+        white-space: nowrap;
+        text-decoration: none;
+        line-height: 1;
+
+        ion-icon {
+            font-size: 1.15rem;
+            flex-shrink: 0;
+        }
+
+        // Nút Đăng nhập
+        &--login {
+            background: $accent-gold;
+            color: $bg-primary;
+
+            &:hover {
+                background: lighten($accent-gold, 8%);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(196, 155, 99, 0.4);
+            }
+        }
+
+        // Nút tên user / vào dashboard
+        &--dashboard {
+            background: rgba(196, 155, 99, 0.12);
+            color: $accent-gold;
+            border: 1px solid rgba(196, 155, 99, 0.25);
+
+            &:hover {
+                background: rgba(196, 155, 99, 0.22);
+                border-color: $accent-gold;
+                transform: translateY(-2px);
+            }
+
+            span {
+                max-width: 120px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+
+        // Nút Đăng xuất
+        &--logout {
+            background: transparent;
+            color: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+
+            &:hover {
+                background: rgba(220, 50, 50, 0.15);
+                color: #ff6b6b;
+                border-color: rgba(220, 50, 50, 0.4);
+                transform: translateY(-2px);
+            }
+        }
+
+        // Mobile: ẩn text, chỉ hiện icon
+        @media (max-width: 480px) {
+            padding: 9px 12px;
+
+            span {
+                display: none;
+            }
+
+            ion-icon {
+                margin: 0;
+                font-size: 1.3rem;
+            }
+        }
+    }
+}
+
+.cafe-logo {
+    height: 55px;
+    width: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    mix-blend-mode: lighten;
+
+    @media (max-width: 768px) {
+        height: 42px;
+    }
+}
